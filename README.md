@@ -118,28 +118,34 @@ python3 scripts/measure_costs.py
 
 ## Fresh-clone rerun
 
-> **PLACEHOLDER — to be filled in with the real public-clone
-> results.** The fresh-clone rerun happens after this pack is
-> published to its public repository: fresh-clone the repository,
-> run `bash scripts/run_drill.sh`, and record the command and its
-> results here.
->
-> Equivalent proof performed during the build (not a public clone):
-> the staged `scripts/` directory was copied to a fresh directory
-> in `/tmp`, and the drill was run from that copy alone — see
-> [`logs/fresh-copy-rerun.log`](logs/fresh-copy-rerun.log)
-> (45 checks, 45 passed, 0 failed). The public fresh-clone result
-> is still pending and is NOT claimed here.
->
-> Fresh-clone rerun command (to run after publication):
->
-> ```sh
-> git clone <public-repository-url>
-> cd <repository-directory>
-> bash scripts/run_drill.sh
-> ```
->
-> Fresh-clone rerun results: _pending_.
+Fresh-clone rerun performed 2026-11-16 (finished 23:48 WIB) from a
+fresh `git clone` of this repository at commit
+`6e659287f6045789de140771d9040fde446f076f`:
+
+```sh
+git clone https://github.com/araupooo/pftl-threshold-signature-validator-key-custody.git
+cd pftl-threshold-signature-validator-key-custody
+LIBOQS_PATH=<path-to-liboqs-0.16.0.so> PY=<python-with-oqs-0.16.0> bash scripts/run_drill.sh
+```
+
+(`PY` selects the interpreter with `oqs` 0.16.0 installed;
+`LIBOQS_PATH` points at the liboqs 0.16.0 shared library. Both are
+environment-specific; the drill itself needs only python3 with
+liboqs-python and a discoverable liboqs 0.16.0 — see
+[`scripts/oqs_ctypes.py`](scripts/oqs_ctypes.py).)
+
+Results: **RUN_DRILL: ALL GREEN** (exit 0). 5 drill runs, 45 checks
+each, **45 passed, 0 failed in every run**; cost measurement: all
+size assertions passed; determinism comparison: **ALL 5 RUNS
+AGREE**, failures 0. Each rerun log carries 29 full 64-hex SHA-256
+values. The rerun regenerated the clone's `logs/` and `ledger/`
+from the cloned files alone — no staged files were used.
+
+Equivalent proof performed during the build (not a public clone):
+the staged `scripts/` directory was copied to a fresh directory
+in `/tmp`, and the drill was run from that copy alone — see
+[`logs/fresh-copy-rerun.log`](logs/fresh-copy-rerun.log)
+(45 checks, 45 passed, 0 failed).
 
 ## Verification
 
