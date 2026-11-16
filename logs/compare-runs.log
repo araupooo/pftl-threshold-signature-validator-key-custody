@@ -1,0 +1,29 @@
+runs found: 5 ['run-1.log', 'run-2.log', 'run-3.log', 'run-4.log', 'run-5.log']
+[PASS] run-1.log: 45 passed, 0 failed
+  full 64-hex SHA-256 values present: 29
+[PASS] run-2.log: 45 passed, 0 failed
+  full 64-hex SHA-256 values present: 29
+[PASS] run-3.log: 45 passed, 0 failed
+  full 64-hex SHA-256 values present: 29
+[PASS] run-4.log: 45 passed, 0 failed
+  full 64-hex SHA-256 values present: 29
+[PASS] run-5.log: 45 passed, 0 failed
+  full 64-hex SHA-256 values present: 29
+invariant files found: 5
+  invariant all_checkpoint_sigs_verified               = True
+  invariant checkpoint_count                           = 6
+  invariant checks_failed                              = 0
+  invariant checks_passed                              = 45
+  invariant frost_below_quorum_rejected                = True
+  invariant frost_quorum_signs                         = True
+  invariant frost_refresh_keeps_group_key              = True
+  invariant frost_refresh_revokes_old_shares           = False
+  invariant frost_rekey_revokes_old_shares             = True
+  invariant mldsa_below_quorum_rejected                = True
+  invariant mldsa_quorum_reconstructs                  = True
+  invariant mldsa_rekey_revokes_old_shares             = True
+  invariant mldsa_reshare_keeps_group_key              = True
+  invariant mldsa_reshare_revokes_old_shares           = False
+  invariant vectors_replayed_ok                        = True
+failures: 0 []
+=== DETERMINISM COMPARISON: ALL 5 RUNS AGREE ===
