@@ -1,0 +1,68 @@
+{
+  "checkpoints": [
+    {
+      "height": 1000,
+      "path": "frost",
+      "sig_sha256": "d64fb77c4785de528f72d0205f6374a16c1fa48d5dcd47b595e6ca7ba64559b2",
+      "state_root": "51ce747808f5945430553a57a1c729377373e15af585e8bb9099cd033a5d5c16",
+      "verified": true
+    },
+    {
+      "height": 1001,
+      "path": "frost",
+      "sig_sha256": "2751ed897f2773a619624a73c6e49c27e15f5da85c08d62b20b0da82d4352041",
+      "state_root": "828e8cea921eb2c34f6d0a4a929b3c8a9847c815706944a85116045173724104",
+      "verified": true
+    },
+    {
+      "height": 1002,
+      "path": "frost",
+      "sig_sha256": "c5a6d9ae6be6bab9c30e69b065a975716add7642274fdac166aa5b85eb43001c",
+      "state_root": "ec60a0d827ee478fd33c616a5e8ff95af73538dae05fa56092bbff07206c9441",
+      "verified": true
+    },
+    {
+      "height": 6000,
+      "path": "mldsa-shamir",
+      "sig_sha256": "d2d7b5ae685a16e2b1e82bd95ed1fae77c2707152c325cba6d76277c8b12c2e3",
+      "state_root": "337caa8d8ac0e9c526622d8afc24aa055a143dcc19b5e533a6a98a1b3b941efb",
+      "verified": true
+    },
+    {
+      "height": 6001,
+      "path": "mldsa-shamir",
+      "sig_sha256": "d811bfca64b96ce78915f0a02f28c61526e030a541e8febe82efcc69a52e8a20",
+      "state_root": "221eba2e61a8ff6dfcd0a9d34501ae0550b2d88642ee2417f4c9e078b081ea4b",
+      "verified": true
+    },
+    {
+      "height": 6002,
+      "path": "mldsa-shamir",
+      "sig_sha256": "0766db141bdb9af8cebb1eaee78fc4227bc29abd48a21b0d8eab82da6f5e5207",
+      "state_root": "0cb940bba5b5cde59c6078fb664fa0eb1e6f7375043ce1a67d402aca65d5f55d",
+      "verified": true
+    }
+  ],
+  "checks_failed": 0,
+  "checks_passed": 45,
+  "failed_names": [],
+  "path_a_frost": {
+    "group_pk_sha256": "5c8229745ec9852201247212b7897fdedaa2fdd48069fdc695f8a6e4b39268f4",
+    "n": 5,
+    "refresh_revokes_old_shares": false,
+    "rekey_group_pk_sha256": "04b55ad37ddca2197e6233c6e839c524e2887ae3bfde5581031c42ed2d4b3148",
+    "rotation": "refresh-keeps-group-key",
+    "share_bytes": 32,
+    "t": 3
+  },
+  "path_b_mldsa": {
+    "group_pk_sha256": "6375e15a375ba3e861d355a83669603cd66157f906e353e4eed8735d1e842b6c",
+    "n": 5,
+    "rekey_group_pk_sha256": "42a47b43c6315355c886b2224ac40aaa51e62c6cca336926ad09a430f1543da2",
+    "reshare_revokes_old_shares": false,
+    "rotation": "reshare-keeps-group-key",
+    "share_bytes": 4032,
+    "t": 3
+  },
+  "run": 1
+}
