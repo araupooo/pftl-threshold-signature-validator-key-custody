@@ -1,0 +1,92 @@
+=== THRESHOLD-SIGNATURE VALIDATOR KEY-CUSTODY DRILL ===
+run: 1
+started_utc: 2026-11-16T15:58:18.536777+00:00
+python: 3.12.3
+frost: RFC 9591 FROST(Ed25519, SHA-512), pure-Python (frost_ed25519.py)
+liboqs_version: 0.16.0
+--- PHASE 0: RFC 9591 APPENDIX E.1 TEST-VECTOR REPLAY ---
+  vector: [PASS] group_public_key = s*B
+  vector: [PASS] share P1 = s + a1*1
+  vector: [PASS] share P3 = s + a1*3
+  vector: [PASS] P1 hiding_nonce
+  vector: [PASS] P1 binding_nonce
+  vector: [PASS] P3 hiding_nonce
+  vector: [PASS] P3 binding_nonce
+  vector: [PASS] P1 hiding_nonce_commitment
+  vector: [PASS] P1 binding_nonce_commitment
+  vector: [PASS] P3 hiding_nonce_commitment
+  vector: [PASS] P3 binding_nonce_commitment
+  vector: [PASS] P1 binding_factor
+  vector: [PASS] P3 binding_factor
+  vector: [PASS] P1 sig_share
+  vector: [PASS] P3 sig_share
+  vector: [PASS] aggregate signature R||z
+  vector: [PASS] aggregate signature verifies under group public key
+  vector: [PASS] P1 signature share verifies
+  vector: [PASS] P3 signature share verifies
+  vector: failures: 0 []
+[PASS] RFC 9591 Appendix E.1 test vectors reproduced (20 checks) -- exit=0
+--- PHASE 1: PATH A -- FROST THRESHOLD SIGNING (n=5, t=3) ---
+NOTE: genuine threshold signing -- the group secret is never reconstructed at signing time.
+group_public_key sha256: 5c8229745ec9852201247212b7897fdedaa2fdd48069fdc695f8a6e4b39268f4
+group_public_key bytes: 32 (Ed25519, RFC 8032)
+share size: 32 bytes per share (scalar mod L); shares: 5, threshold: 3
+group_secret sha256: fd561483b745d90cfbfaca0e9816c799e61eb31303d19c51471a1ba7b97f3d45 (dealer only; never used to sign)
+[PASS] dealer keygen: group public key = secret*B
+[PASS] dealer keygen: shares lie on the secret polynomial
+[PASS] dealer keygen: any 3 shares reconstruct the secret
+[PASS] dealer keygen: 2 shares do NOT reconstruct the secret
+[PASS] FROST quorum {1,2,4} signs checkpoint height=1000 -- sig sha256: d64fb77c4785de528f72d0205f6374a16c1fa48d5dcd47b595e6ca7ba64559b2
+[PASS] FROST quorum signature verifies under group public key height=1000
+[PASS] FROST signature for height=1000 rejected for another checkpoint
+[PASS] FROST quorum {1,2,4} signs checkpoint height=1001 -- sig sha256: 2751ed897f2773a619624a73c6e49c27e15f5da85c08d62b20b0da82d4352041
+[PASS] FROST quorum signature verifies under group public key height=1001
+[PASS] FROST signature for height=1001 rejected for another checkpoint
+[PASS] FROST quorum {1,2,4} signs checkpoint height=1002 -- sig sha256: c5a6d9ae6be6bab9c30e69b065a975716add7642274fdac166aa5b85eb43001c
+[PASS] FROST quorum signature verifies under group public key height=1002
+[PASS] FROST signature for height=1002 rejected for another checkpoint
+[PASS] FROST below-quorum {1,2} aggregate signature is INVALID -- sig sha256: 159f8ddfeceb6810fe45a9dfad083aeb82e1eee168ad879ee8e5d2bc5196a28c
+[PASS] FROST single share {1} aggregate signature is INVALID -- sig sha256: 8c25aeb33fac645ad64e70c570ec80707300a65295c737952bd36b5120dad85f
+[PASS] FROST quorum with one foreign share is INVALID -- sig sha256: e03ff2974c612cdb8611ff94e08d842eaff1ef6ba614d836270b080e418737df
+--- PHASE 1b: FROST SHARE ROTATION (refresh, group key kept) ---
+[PASS] FROST refresh: group public key UNCHANGED -- group pk sha256 still: 5c8229745ec9852201247212b7897fdedaa2fdd48069fdc695f8a6e4b39268f4
+[PASS] FROST refreshed quorum {2,3,5} signs and verifies -- sig sha256: 65ec5da907ff12de44d2e14ff1e65b0b286e35daaecb918229f0cbc4dd158057
+[PASS] FROST mixed old+new quorum is INVALID (version binding) -- sig sha256: 2d336e50f95e773a16ae917ab694024c38f4be82998eed7526329bb910fd1585
+[PASS] FROST LIMITATION DEMONSTRATED: pre-refresh quorum still signs (refresh does not revoke old shares) -- old shares remain valid until rekey -- see framework.md
+--- PHASE 1c: FROST FULL REKEY (group key changes) ---
+[PASS] FROST rekey: new group public key differs -- new group pk sha256: 04b55ad37ddca2197e6233c6e839c524e2887ae3bfde5581031c42ed2d4b3148
+[PASS] FROST rekeyed quorum signs under the NEW group key -- sig sha256: af748e9c29b5fffd892a704c3d39c9145d1b87f5aded634a699c66ed0c9d43f6
+[PASS] FROST rekey: old shares CANNOT sign under the new group key
+--- PHASE 2: PATH B -- ML-DSA-65 SHAMIR-SHARED CUSTODY (n=5, t=3) ---
+NOTE: shared custody WITH reconstruction -- a quorum reconstructs the ML-DSA secret key at signing time. This is NOT threshold signing; no standardized threshold ML-DSA exists as of November 2026.
+group_public_key sha256: 6375e15a375ba3e861d355a83669603cd66157f906e353e4eed8735d1e842b6c
+ML-DSA-65 sizes: pk=1952 sk=4032 sig=3309 (FIPS 204 Table 2: 1952/4032/3309)
+[PASS] ML-DSA-65 sizes match FIPS 204 Table 2
+ML-DSA secret key sha256: 666b0827f3d64933d055245677f98a8f3432519f99be249b19cc5273b99d21b0
+Shamir share size: 4032 bytes per share + 1 byte identifier
+[PASS] Shamir shares: 5 shares of 4032 bytes
+[PASS] ML-DSA quorum {1,3,5} reconstructs the secret key -- reconstructed sk sha256: 666b0827f3d64933d055245677f98a8f3432519f99be249b19cc5273b99d21b0
+[PASS] ML-DSA quorum-reconstructed key signs checkpoint height=6000 -- sig sha256: d2d7b5ae685a16e2b1e82bd95ed1fae77c2707152c325cba6d76277c8b12c2e3
+[PASS] ML-DSA quorum signature verifies under group public key height=6000
+[PASS] ML-DSA quorum-reconstructed key signs checkpoint height=6001 -- sig sha256: d811bfca64b96ce78915f0a02f28c61526e030a541e8febe82efcc69a52e8a20
+[PASS] ML-DSA quorum signature verifies under group public key height=6001
+[PASS] ML-DSA quorum-reconstructed key signs checkpoint height=6002 -- sig sha256: 0766db141bdb9af8cebb1eaee78fc4227bc29abd48a21b0d8eab82da6f5e5207
+[PASS] ML-DSA quorum signature verifies under group public key height=6002
+[PASS] ML-DSA below-quorum {1,2} reconstruction DIFFERS from the secret key -- wrong-key sha256: e156e892b0184be36df65a83e5dbfa430ed428ee8809bd0137c7717491344e6f
+[PASS] ML-DSA below-quorum signature is INVALID under the group public key -- sig sha256: 0dd47fbc7c662507fe3a09ef06ad382031edaa1036e01a77c5ca2b234f07f2fc
+[PASS] ML-DSA single share used as a key is INVALID under the group public key -- sig sha256: 2b1a293def68a9466a1b4adc403abfbbbf919b2a952f2c53ed0f99b4538eeeb7
+--- PHASE 2b: ML-DSA SHARE ROTATION (reshare, group key kept) ---
+[PASS] ML-DSA reshare: new quorum reconstructs the SAME secret key -- reconstructed sk sha256: 666b0827f3d64933d055245677f98a8f3432519f99be249b19cc5273b99d21b0
+[PASS] ML-DSA reshare: group public key UNCHANGED -- group pk sha256 still: 6375e15a375ba3e861d355a83669603cd66157f906e353e4eed8735d1e842b6c
+[PASS] ML-DSA reshare: new quorum signs and verifies -- sig sha256: 80d17abaa33f80a8d8c1ba19a6ce76acbd4ae2ee5380d0a20815e79b350a31ac
+[PASS] ML-DSA mixed old+new quorum reconstruction DIFFERS -- mixed-key sha256: ad478855c8b55b0d2e6c4a9a3a5032f290500641cdddc108129783fa4c35bdef
+[PASS] ML-DSA mixed old+new quorum signature is INVALID -- sig sha256: 6f33c28ca1ebfdf4f3c81e48f5fb8420a84745f5d63cc7bda7bc0a96084fc669
+[PASS] ML-DSA LIMITATION DEMONSTRATED: pre-rotation quorum still reconstructs the key (resharing does not revoke old shares) -- old shares remain valid until rekey -- see framework.md
+--- PHASE 2c: ML-DSA FULL REKEY (group key changes) ---
+[PASS] ML-DSA rekey: new group public key differs -- new group pk sha256: 42a47b43c6315355c886b2224ac40aaa51e62c6cca336926ad09a430f1543da2
+[PASS] ML-DSA rekeyed key signs under the NEW group key -- sig sha256: 981fd576d8c79b1913a17aa0419c5d68e78f8feae2a4cc362a805db61f663e54
+[PASS] ML-DSA rekey: old key CANNOT sign under the new group key
+state written: ledger/final-state-run1.json
+invariants written: ledger/invariants-run1.json
+checks: 45 passed, 0 failed []
+=== CUSTODY DRILL: ALL CHECKS PASSED ===
